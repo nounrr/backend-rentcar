@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Authentication | Tanger Stylo",
-  description: "Access the Tanger Stylo back-office.",
+  title: "Authentication | smartLocation",
+  description: "Access the smartLocation back-office.",
 };
 
 export default function AuthLayout({

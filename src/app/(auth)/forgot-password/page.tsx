@@ -10,7 +10,7 @@ export default function ForgotPasswordPage() {
           <div className="brand-badge text-foreground flex size-10 items-center justify-center rounded-xl">
             <Logo size={24} />
           </div>
-          Tanger Stylo
+          smartLocation
         </Link>
         <ForgotPasswordForm1 />
       </div>

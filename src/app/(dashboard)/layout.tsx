@@ -1,15 +1,21 @@
 "use client";
 
 import React from "react";
+import { useLocale } from "next-intl";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
+import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { localeMeta, type Locale } from "@/i18n/config";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = useLocale() as Locale;
+  const sidebarSide = localeMeta[locale].dir === "rtl" ? "right" : "left";
+
   return (
     <SidebarProvider
       style={{
@@ -21,7 +27,7 @@ export default function DashboardLayout({
       <AppSidebar
         variant="inset"
         collapsible="offcanvas"
-        side="left"
+        side={sidebarSide}
       />
       <SidebarInset className="brand-shell overflow-hidden md:border md:border-border/60">
         <SiteHeader />
@@ -32,6 +38,7 @@ export default function DashboardLayout({
             </div>
           </div>
         </div>
+        <MobileBottomNav />
       </SidebarInset>
     </SidebarProvider>
   );

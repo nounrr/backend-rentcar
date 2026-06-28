@@ -94,7 +94,7 @@ export function ForgotPasswordForm1({
                           <Input
                             id="email"
                             type="email"
-                            placeholder="admin@tanger-stylo.com"
+                            placeholder="admin@smartlocation.com"
                             autoComplete="email"
                             inputMode="email"
                             {...field}

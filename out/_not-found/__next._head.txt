@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[11913,["/location/_next/static/chunks/fac33411a13bb0e6.js","/location/_next/static/chunks/c2ee7481f6bfba83.js"],"ViewportBoundary"]
+3:I[11913,["/location/_next/static/chunks/fac33411a13bb0e6.js","/location/_next/static/chunks/c2ee7481f6bfba83.js"],"MetadataBoundary"]
+4:"$Sreact.suspense"
+5:I[13103,["/location/_next/static/chunks/fac33411a13bb0e6.js","/location/_next/static/chunks/c2ee7481f6bfba83.js"],"IconMark"]
+0:{"buildId":"JpGrBgNQoJl3q3ENF_WlJ","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"smartLocation Back Office"}],["$","meta","1",{"name":"description","content":"Tableau de bord d'administration pour les operations de smartLocation."}],["$","link","2",{"rel":"icon","href":"/location/favicon.ico?favicon.18365458.ico","sizes":"32x32","type":"image/x-icon"}],["$","$L5","3",{}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}

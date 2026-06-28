@@ -22,6 +22,14 @@ export const PERM_CUSTOMERS_VIEW = "customers.view"
 export const PERM_CUSTOMERS_CREATE = "customers.create"
 export const PERM_CUSTOMERS_EDIT = "customers.edit"
 
+// Vehicles
+export const PERM_VEHICLES_VIEW = "vehicles.view"
+export const PERM_VEHICLES_CREATE = "vehicles.create"
+export const PERM_VEHICLES_EDIT = "vehicles.edit"
+export const PERM_VEHICLES_DELETE = "vehicles.delete"
+export const PERM_VEHICLE_CATEGORIES_VIEW = "vehicle-categories.view"
+export const PERM_VEHICLE_CATEGORIES_MANAGE = "vehicle-categories.manage"
+
 // ─── Orders ───────────────────────────────────────────────────────────────────
 export const PERM_ORDERS_VIEW = "orders.view"
 export const PERM_ORDERS_CREATE = "orders.create"
@@ -52,9 +60,16 @@ export const PERM_ROLES_MANAGE = "roles.manage"
 export const PERM_PERMISSIONS_VIEW = "permissions.view"
 export const PERM_PERMISSIONS_MANAGE = "permissions.manage"
 
+// ─── Reservations ─────────────────────────────────────────────────────────────
+export const PERM_RESERVATIONS_VIEW = "reservations.view"
+export const PERM_RESERVATIONS_CREATE = "reservations.create"
+export const PERM_RESERVATIONS_EDIT = "reservations.edit"
+export const PERM_RESERVATIONS_DELETE = "reservations.delete"
+
 // ─── Payments ─────────────────────────────────────────────────────────────────
 export const PERM_PAYMENTS_VIEW = "payments.view"
 export const PERM_PAYMENTS_MANAGE = "payments.manage"
+export const PERM_PAYMENTS_DELETE = "payments.delete"
 
 // ─── Group helpers (useful for hasAnyPermission checks) ──────────────────────
 export const PERMS_USERS_ALL = [

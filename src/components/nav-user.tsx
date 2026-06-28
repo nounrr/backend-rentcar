@@ -3,8 +3,10 @@
 import {
   EllipsisVertical,
   LogOut,
+  UserRound,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import * as React from "react"
 import { toast } from "sonner"
 
@@ -36,6 +38,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar()
   const router = useRouter()
+  const t = useTranslations("UserMenu")
   const [isPending, startTransition] = React.useTransition()
 
   const handleSignOut = React.useCallback(() => {
@@ -43,14 +46,14 @@ export function NavUser({
       const result = await signOutAction()
 
       if (result.status === "error") {
-        toast.error(result.message ?? "La deconnexion a echoue. Veuillez reessayer.")
+        toast.error(result.message ?? t("signOut"))
         return
       }
 
       router.replace("/sign-in")
       router.refresh()
     })
-  }, [router])
+  }, [router, t])
 
   return (
     <SidebarMenu>
@@ -64,13 +67,13 @@ export function NavUser({
               <div className="brand-badge text-foreground flex h-9 w-9 items-center justify-center rounded-lg">
                 <Logo size={24} />
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="grid flex-1 text-start text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
                 <span className="text-muted-foreground truncate text-xs">
                   {user.email}
                 </span>
               </div>
-              <EllipsisVertical className="ml-auto size-4" />
+              <EllipsisVertical className="ms-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -80,11 +83,11 @@ export function NavUser({
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+              <div className="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
                 <div className="brand-badge text-foreground flex h-9 w-9 items-center justify-center rounded-lg">
                   <Logo size={24} />
                 </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
+                <div className="grid flex-1 text-start text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
                   <span className="text-muted-foreground truncate text-xs">
                     {user.email}
@@ -93,9 +96,14 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push("/profile")}>
+              <UserRound />
+              {t("profile")}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer" onSelect={handleSignOut}>
               <LogOut />
-              {isPending ? "Deconnexion..." : "Se deconnecter"}
+              {t("signOut")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

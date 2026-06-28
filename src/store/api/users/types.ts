@@ -15,6 +15,7 @@ export interface AdminUserPermission {
 export interface AdminUser {
   id: UserId
   name: string
+  username: string
   email: string
   phone: string | null
   cin: string | null
@@ -80,7 +81,10 @@ export interface SyncUserAccessResponse {
 
 export interface UpdateUserRequest {
   name?: string
+  username?: string
   email?: string
+  password?: string
+  password_confirmation?: string
   phone?: string | null
   cin?: string | null
   job_title?: string | null

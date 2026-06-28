@@ -88,8 +88,8 @@ export function LoginForm1({
             <Logo size={30} />
           </div>
           <div>
-            <p className="text-lg font-semibold tracking-tight">Tanger Stylo</p>
-            <p className="text-sm font-medium text-primary">Administration e-commerce</p>
+            <p className="text-lg font-semibold tracking-tight">smartLocation</p>
+            <p className="text-sm font-medium text-primary">Administration location</p>
           </div>
         </Link>
       </div>

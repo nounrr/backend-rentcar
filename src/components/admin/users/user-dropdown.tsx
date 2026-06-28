@@ -10,6 +10,7 @@ import {
   Loader2,
   Lock,
   MoreHorizontal,
+  Pencil,
   PowerOff,
   Search,
   ShieldCheck,
@@ -68,6 +69,7 @@ import {
   PERM_USERS_MANAGE_ROLES,
   PERM_USERS_MANAGE_PERMISSIONS,
   PERM_USERS_DEACTIVATE,
+  PERM_USERS_EDIT,
 } from "@/lib/permissions"
 
 // helpers
@@ -143,6 +145,236 @@ function ToggleActivationDialog({
   )
 }
 
+function UserEditDialog({
+  user,
+  open,
+  onOpenChange,
+}: {
+  user: AdminUser
+  open: boolean
+  onOpenChange: (v: boolean) => void
+}) {
+  const [updateUser, { isLoading }] = useUpdateUserMutation()
+  const [form, setForm] = useState({
+    name: user.name,
+    username: user.username,
+    email: user.email,
+    phone: user.phone ?? "",
+    cin: user.cin ?? "",
+    job_title: user.job_title ?? "",
+    password: "",
+    password_confirmation: "",
+    is_active: user.is_active,
+  })
+
+  useEffect(() => {
+    if (!open) return
+
+    setForm({
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      phone: user.phone ?? "",
+      cin: user.cin ?? "",
+      job_title: user.job_title ?? "",
+      password: "",
+      password_confirmation: "",
+      is_active: user.is_active,
+    })
+  }, [open, user])
+
+  const handleSave = useCallback(async () => {
+    const payload = {
+      name: form.name.trim(),
+      username: form.username.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim() || null,
+      cin: form.cin.trim() || null,
+      job_title: form.job_title.trim() || null,
+      is_active: form.is_active,
+      ...(form.password
+        ? {
+            password: form.password,
+            password_confirmation: form.password_confirmation,
+          }
+        : {}),
+    }
+
+    const result = await updateUser({ userId: user.id, ...payload })
+
+    if ("error" in result) {
+      toast.error("Impossible de modifier cet utilisateur.")
+      return
+    }
+
+    toast.success("Utilisateur modifie.", {
+      description: `${payload.name} a ete mis a jour.`,
+    })
+    onOpenChange(false)
+  }, [form, onOpenChange, updateUser, user.id])
+
+  const isInvalid =
+    form.name.trim().length === 0 ||
+    form.username.trim().length === 0 ||
+    form.email.trim().length === 0 ||
+    (form.password.length > 0 &&
+      (form.password.length < 8 || form.password !== form.password_confirmation))
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="flex max-h-[90vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-[620px]">
+        <DialogHeader className="shrink-0 border-b border-border/70 px-6 py-5">
+          <DialogTitle>Modifier l&apos;utilisateur</DialogTitle>
+          <DialogDescription className="mt-1 leading-relaxed">
+            Mettez a jour les informations du compte {user.name}.
+          </DialogDescription>
+        </DialogHeader>
+
+        <ScrollArea className="min-h-0 flex-1">
+          <div className="grid gap-4 px-6 py-5 md:grid-cols-2">
+            <div className="space-y-2">
+              <label className="text-sm font-medium" htmlFor={`edit-user-name-${user.id}`}>
+                Nom complet
+              </label>
+              <Input
+                id={`edit-user-name-${user.id}`}
+                value={form.name}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, name: event.target.value }))
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium" htmlFor={`edit-user-username-${user.id}`}>
+                Username
+              </label>
+              <Input
+                id={`edit-user-username-${user.id}`}
+                value={form.username}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, username: event.target.value }))
+                }
+              />
+            </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium" htmlFor={`edit-user-email-${user.id}`}>
+                E-mail
+              </label>
+              <Input
+                id={`edit-user-email-${user.id}`}
+                type="email"
+                value={form.email}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, email: event.target.value }))
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium" htmlFor={`edit-user-phone-${user.id}`}>
+                Telephone
+              </label>
+              <Input
+                id={`edit-user-phone-${user.id}`}
+                value={form.phone}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, phone: event.target.value }))
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium" htmlFor={`edit-user-cin-${user.id}`}>
+                CIN
+              </label>
+              <Input
+                id={`edit-user-cin-${user.id}`}
+                value={form.cin}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, cin: event.target.value }))
+                }
+              />
+            </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium" htmlFor={`edit-user-job-${user.id}`}>
+                Fonction
+              </label>
+              <Input
+                id={`edit-user-job-${user.id}`}
+                value={form.job_title}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, job_title: event.target.value }))
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium" htmlFor={`edit-user-password-${user.id}`}>
+                Nouveau mot de passe
+              </label>
+              <Input
+                id={`edit-user-password-${user.id}`}
+                type="password"
+                value={form.password}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, password: event.target.value }))
+                }
+                placeholder="Laisser vide pour conserver"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium" htmlFor={`edit-user-confirm-${user.id}`}>
+                Confirmation
+              </label>
+              <Input
+                id={`edit-user-confirm-${user.id}`}
+                type="password"
+                value={form.password_confirmation}
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    password_confirmation: event.target.value,
+                  }))
+                }
+                placeholder="Confirmer si modifie"
+              />
+            </div>
+
+            <label className="flex items-center gap-3 rounded-xl border border-border/70 px-3 py-2.5 md:col-span-2">
+              <Checkbox
+                checked={form.is_active}
+                onCheckedChange={(checked) =>
+                  setForm((current) => ({ ...current, is_active: checked === true }))
+                }
+              />
+              <div>
+                <p className="text-sm font-medium">Compte actif</p>
+                <p className="text-xs text-muted-foreground">
+                  L&apos;utilisateur peut acceder au back-office.
+                </p>
+              </div>
+            </label>
+          </div>
+        </ScrollArea>
+
+        <DialogFooter className="shrink-0 border-t border-border/70 px-6 py-4">
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
+            Annuler
+          </Button>
+          <Button onClick={handleSave} disabled={isLoading || isInvalid}>
+            {isLoading ? <Loader2 className="size-4 animate-spin" /> : <Pencil className="size-4" />}
+            Enregistrer
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 // Detail Sheet
 function UserDetailSheet({
   user, open, onOpenChange, onEditRoles, onEditPermissions, onToggleActivation,
@@ -151,8 +383,8 @@ function UserDetailSheet({
   const createdAt = formatDate(user.created_at)
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="flex w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-[420px]">
-        <SheetHeader className="border-b border-border/70 px-6 py-5">
+      <SheetContent side="right" className="flex h-dvh w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-[420px]">
+        <SheetHeader className="shrink-0 border-b border-border/70 px-6 py-5">
           <div className="flex items-start gap-3.5">
             <Avatar className="size-12 shrink-0 border border-border/70">
               <AvatarFallback className="bg-accent text-accent-foreground text-sm font-semibold">{getInitials(user.name)}</AvatarFallback>
@@ -168,7 +400,7 @@ function UserDetailSheet({
             </div>
           </div>
         </SheetHeader>
-        <ScrollArea className="flex-1">
+        <ScrollArea className="min-h-0 flex-1">
           <div className="space-y-6 px-6 py-5">
             <SectionBlock title="Informations">
               <FieldRow label="Fonction">{user.job_title ? <span className="text-sm">{user.job_title}</span> : <EmptyValue label="Non renseignee" />}</FieldRow>
@@ -457,6 +689,7 @@ function UserPermissionsDialog({ user, open, onOpenChange }: { user: AdminUser; 
 // Main export
 export function UserDropdown({ user }: { user: AdminUser }) {
   const [detailOpen, setDetailOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
   const [rolesOpen, setRolesOpen] = useState(false)
   const [permissionsOpen, setPermissionsOpen] = useState(false)
   const [toggleActivationOpen, setToggleActivationOpen] = useState(false)
@@ -465,7 +698,8 @@ export function UserDropdown({ user }: { user: AdminUser }) {
   const canManageRoles = can(PERM_USERS_MANAGE_ROLES)
   const canManagePermissions = can(PERM_USERS_MANAGE_PERMISSIONS)
   const canDeactivate = can(PERM_USERS_DEACTIVATE)
-  const canManageAny = canManageRoles || canManagePermissions || canDeactivate
+  const canEdit = can(PERM_USERS_EDIT)
+  const canManageAny = canEdit || canManageRoles || canManagePermissions || canDeactivate
 
   return (
     <>
@@ -492,6 +726,11 @@ export function UserDropdown({ user }: { user: AdminUser }) {
                   <ShieldCheck className="size-4 text-muted-foreground" />Gerer les roles
                 </DropdownMenuItem>
               )}
+              {canEdit && (
+                <DropdownMenuItem className="cursor-pointer gap-2" onSelect={() => setEditOpen(true)}>
+                  <Pencil className="size-4 text-muted-foreground" />Modifier l&apos;utilisateur
+                </DropdownMenuItem>
+              )}
               {canManagePermissions && (
                 <DropdownMenuItem className="cursor-pointer gap-2" onSelect={() => setPermissionsOpen(true)}>
                   <KeyRound className="size-4 text-muted-foreground" />Gerer les permissions
@@ -514,6 +753,7 @@ export function UserDropdown({ user }: { user: AdminUser }) {
       </DropdownMenu>
 
       <UserDetailSheet user={user} open={detailOpen} onOpenChange={setDetailOpen} onEditRoles={() => setRolesOpen(true)} onEditPermissions={() => setPermissionsOpen(true)} onToggleActivation={() => setToggleActivationOpen(true)} />
+      <UserEditDialog user={user} open={editOpen} onOpenChange={setEditOpen} />
       <UserRolesDialog user={user} open={rolesOpen} onOpenChange={setRolesOpen} />
       <UserPermissionsDialog user={user} open={permissionsOpen} onOpenChange={setPermissionsOpen} />
       <ToggleActivationDialog user={user} open={toggleActivationOpen} onOpenChange={setToggleActivationOpen} />

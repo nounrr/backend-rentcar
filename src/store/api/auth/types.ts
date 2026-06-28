@@ -3,6 +3,7 @@ export type UserId = number | string
 export interface AuthenticatedUser {
   id: UserId
   name: string
+  username: string
   email: string
   phone: string | null
   cin: string | null
@@ -19,6 +20,7 @@ export interface SignInRequest {
 
 export interface SignInResponse {
   user: AuthenticatedUser
+  token?: string
   message?: string
 }
 
@@ -31,5 +33,28 @@ export interface ForgotPasswordResponse {
 }
 
 export interface SignOutResponse {
+  message: string
+}
+
+export interface UpdateProfileRequest {
+  name: string
+  email: string
+  phone?: string | null
+  cin?: string | null
+  job_title?: string | null
+}
+
+export interface UpdateProfileResponse {
+  message: string
+  user: AuthenticatedUser
+}
+
+export interface UpdatePasswordRequest {
+  current_password: string
+  password: string
+  password_confirmation: string
+}
+
+export interface UpdatePasswordResponse {
   message: string
 }

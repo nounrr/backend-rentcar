@@ -24,13 +24,13 @@ export function ForgotPasswordForm3({
                   <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
                     <Logo size={24} />
                   </div>
-                  <span className="text-xl">Tanger Stylo</span>
+                  <span className="text-xl">smartLocation</span>
                 </Link>
               </div>
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Mot de passe oublie ?</h1>
                 <p className="text-muted-foreground text-balance">
-                  Saisissez votre e-mail pour reinitialiser le mot de passe de votre compte Tanger Stylo
+                  Saisissez votre e-mail pour reinitialiser le mot de passe de votre compte smartLocation
                 </p>
               </div>
               <div className="grid gap-3">

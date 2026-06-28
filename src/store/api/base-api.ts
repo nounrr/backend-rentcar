@@ -9,15 +9,22 @@ import type {
 } from "@reduxjs/toolkit/query"
 
 import { apiConfig } from "@/config/api"
+import { getStoredAccessToken, clearStoredAuth } from "@/lib/auth/client-token"
 import { clearSession } from "@/store/slices/session-slice"
 
-export const apiTagTypes = ["Auth", "Dashboard", "Users", "Roles", "Permissions", "Brands", "Categories"] as const
+export const apiTagTypes = ["Auth", "Dashboard", "Users", "Roles", "Permissions", "Brands", "Categories", "Customers", "VehicleCategories", "Vehicles", "Reservations", "Documents", "OilChanges", "MaintenanceRecords", "Maintenance", "Settings"] as const
 
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl: apiConfig.internalBaseUrl,
-  credentials: "include",
+  // En SPA statique, on appelle Laravel directement (plus de proxy /api Next).
+  baseUrl: apiConfig.backendBaseUrl,
   prepareHeaders: (headers) => {
     headers.set("Accept", "application/json")
+
+    // Token Bearer (personal access token Sanctum) stocke cote navigateur.
+    const token = getStoredAccessToken()
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`)
+    }
 
     return headers
   },
@@ -31,6 +38,7 @@ const baseQueryWithSession: BaseQueryFn<
   const result = await rawBaseQuery(args, api, extraOptions)
 
   if (result.error?.status === 401) {
+    clearStoredAuth()
     api.dispatch(clearSession())
   }
 

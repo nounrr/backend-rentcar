@@ -24,13 +24,13 @@ export function LoginForm3({
                   <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
                     <Logo size={24} />
                   </div>
-                  <span className="text-xl">Tanger Stylo</span>
+                  <span className="text-xl">smartLocation</span>
                 </Link>
               </div>
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Heureux de vous revoir</h1>
                 <p className="text-muted-foreground text-balance">
-                  Connectez-vous a votre compte Tanger Stylo
+                  Connectez-vous a votre compte smartLocation
                 </p>
               </div>
               <div className="grid gap-3">
@@ -112,7 +112,7 @@ export function LoginForm3({
         </CardContent>
       </Card>
       <div className="text-muted-foreground text-center text-xs text-balance">
-        Espace d'acces reserve a l'administration Tanger Stylo.
+        Espace d'acces reserve a l'administration smartLocation.
       </div>
     </div>
   )
